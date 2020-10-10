@@ -26,7 +26,7 @@
 
 QCodeEditor::QCodeEditor(QWidget *widget)
     : QTextEdit(widget), m_highlighter(nullptr), m_syntaxStyle(nullptr), m_lineNumberArea(new QLineNumberArea(this)),
-      m_completer(nullptr), m_autoIndentation(true), m_replaceTab(true), m_extraBottomMargin(true),
+      m_completer(nullptr), m_autoIndentation(true), m_replaceTab(true), m_extraBottomMargin(true), m_textChanged(false),
       m_tabReplace(QString(4, ' ')), extra1(), extra2(), extra_squiggles(), m_squiggler(),
       m_parentheses({{'(', ')'}, {'{', '}'}, {'[', ']'}, {'\"', '\"'}, {'\'', '\''}})
 {
@@ -35,6 +35,11 @@ QCodeEditor::QCodeEditor(QWidget *widget)
     setMouseTracking(true);
 
     setSyntaxStyle(QSyntaxStyle::defaultStyle());
+
+    connect(this, &QTextEdit::textChanged, this, [this] {
+      if(hasFocus())
+        m_textChanged = true;
+    });
 }
 
 void QCodeEditor::initFont()
@@ -920,7 +925,19 @@ void QCodeEditor::focusInEvent(QFocusEvent *e)
         m_completer->setWidget(this);
     }
 
+    m_textChanged = false;
     QTextEdit::focusInEvent(e);
+}
+
+void QCodeEditor::focusOutEvent(QFocusEvent* e)
+{
+  QTextEdit::focusOutEvent(e);
+
+  if(m_textChanged)
+  {
+      m_textChanged = false;
+      Q_EMIT editingFinished();
+  }
 }
 
 bool QCodeEditor::event(QEvent *event)
