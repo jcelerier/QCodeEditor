@@ -22,8 +22,8 @@ target_include_directories(QCodeEditorExample PUBLIC
 )
 
 target_link_libraries(QCodeEditorExample
-    Qt5::Core
-    Qt5::Widgets
-    Qt5::Gui
+    ${QT_PREFIX}::Core
+    ${QT_PREFIX}::Widgets
+    ${QT_PREFIX}::Gui
     QCodeEditor
 )

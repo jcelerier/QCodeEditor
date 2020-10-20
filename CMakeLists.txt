@@ -94,20 +94,20 @@ target_include_directories(QCodeEditor PUBLIC
 
 if(CMAKE_COMPILER_IS_GNUCXX)
     target_compile_options(QCodeEditor
-		PRIVATE
-		-ansi
-		-pedantic
-		-Wall
-		-Wextra
-		-Weffc++
-		-Woverloaded-virtual
-		-Winit-self
-		-Wunreachable-code
-	)
+    PRIVATE
+    -ansi
+    -pedantic
+    -Wall
+    -Wextra
+    -Weffc++
+    -Woverloaded-virtual
+    -Winit-self
+    -Wunreachable-code
+  )
 endif(CMAKE_COMPILER_IS_GNUCXX)
 
 target_link_libraries(QCodeEditor
-    Qt5::Core
-    Qt5::Widgets
-    Qt5::Gui
+    ${QT_PREFIX}::Core
+    ${QT_PREFIX}::Widgets
+    ${QT_PREFIX}::Gui
 )
