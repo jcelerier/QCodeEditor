@@ -1,10 +1,12 @@
 // QCodeEditor
 #include <QSyntaxStyle>
+#include "QtCompat.hpp"
 
 // Qt
 #include <QDebug>
 #include <QFile>
 #include <QXmlStreamReader>
+
 
 QSyntaxStyle::QSyntaxStyle(QObject *parent) : QObject(parent), m_name(), m_data(), m_loaded(false)
 {
