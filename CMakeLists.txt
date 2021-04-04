@@ -81,9 +81,7 @@ set(CMAKE_AUTORCC ON)
 if(NOT QT_VERSION)
   set(QT_VERSION Qt5)
 endif()
-find_package(${QT_VERSION}Core    CONFIG REQUIRED)
-find_package(${QT_VERSION}Widgets CONFIG REQUIRED)
-find_package(${QT_VERSION}Gui     CONFIG REQUIRED)
+find_package(${QT_VERSION} REQUIRED COMPONENTS Core Gui Widgets)
 
 add_library(QCodeEditor STATIC
     ${RESOURCES_FILE}
@@ -107,7 +105,7 @@ if(CMAKE_COMPILER_IS_GNUCXX)
     -Winit-self
     -Wunreachable-code
   )
-endif(CMAKE_COMPILER_IS_GNUCXX)
+endif()
 
 target_link_libraries(QCodeEditor
     ${QT_PREFIX}::Core
