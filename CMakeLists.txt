@@ -10,9 +10,11 @@ if (${BUILD_EXAMPLE})
     add_subdirectory(example)
 endif()
 
-set(RESOURCES_FILE
-    resources/qcodeeditor_resources.qrc
-)
+if(Qt5Core_VERSION_STRING)
+  qt5_add_resources(QRCS "${CMAKE_CURRENT_SOURCE_DIR}/resources/qcodeeditor_resources.qrc")
+else()
+  qt_add_resources(QRCS "${CMAKE_CURRENT_SOURCE_DIR}/resources/qcodeeditor_resources.qrc")
+endif()
 
 set(INCLUDE_FILES
     include/QHighlightRule
@@ -87,7 +89,7 @@ endif()
 find_package(${QT_VERSION} REQUIRED COMPONENTS Core Gui Widgets)
 
 add_library(QCodeEditor STATIC
-    ${RESOURCES_FILE}
+    ${QRCS}
     ${SOURCE_FILES}
     ${INCLUDE_FILES}
 )
