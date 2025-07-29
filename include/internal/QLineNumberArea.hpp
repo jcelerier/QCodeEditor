@@ -4,6 +4,7 @@
 #include <QWidget> // Required for inheritance
 
 #include <QCodeEditor>
+#include <verdigris>
 
 class QSyntaxStyle;
 
@@ -12,7 +13,7 @@ class QSyntaxStyle;
  */
 class QLineNumberArea : public QWidget
 {
-    Q_OBJECT
+    W_OBJECT(QLineNumberArea)
 
   public:
     /**

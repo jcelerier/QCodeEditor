@@ -6,6 +6,7 @@
 
 // Qt
 #include <QVector>
+#include <verdigris>
 
 /**
  * @brief Class, that describes JSON code
@@ -13,7 +14,7 @@
  */
 class QJSONHighlighter : public QStyleSyntaxHighlighter
 {
-    Q_OBJECT
+    W_OBJECT(QJSONHighlighter)
   public:
     /**
      * @brief Constructor.

@@ -11,6 +11,9 @@
 #include <QTextBlock>
 #include <QTextEdit>
 
+#include <wobjectimpl.h>
+W_OBJECT_IMPL(QLineNumberArea)
+
 QLineNumberArea::QLineNumberArea(QCodeEditor *parent)
     : QWidget(parent), m_syntaxStyle(nullptr), m_codeEditParent(parent), m_squiggles()
 {

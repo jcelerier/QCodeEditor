@@ -2,6 +2,7 @@
 
 // Qt
 #include <QSyntaxHighlighter> // Required for inheritance
+#include <verdigris>
 
 class QSyntaxStyle;
 
@@ -11,7 +12,7 @@ class QSyntaxStyle;
  */
 class QStyleSyntaxHighlighter : public QSyntaxHighlighter
 {
-    Q_OBJECT
+    W_OBJECT(QStyleSyntaxHighlighter)
 
   public:
     /**

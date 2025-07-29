@@ -9,6 +9,7 @@
 #include <QMap>
 #include <QRegularExpression>
 #include <QVector>
+#include <verdigris>
 
 class QSyntaxStyle;
 
@@ -18,7 +19,7 @@ class QSyntaxStyle;
  */
 class QLuaHighlighter : public QStyleSyntaxHighlighter
 {
-    Q_OBJECT
+    W_OBJECT(QLuaHighlighter)
   public:
     /**
      * @brief Constructor.

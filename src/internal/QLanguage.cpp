@@ -6,6 +6,9 @@
 #include <QIODevice>
 #include <QXmlStreamReader>
 
+#include <wobjectimpl.h>
+W_OBJECT_IMPL(QLanguage)
+
 QLanguage::QLanguage(QIODevice *device, QObject *parent) : QObject(parent), m_loaded(false), m_list()
 {
     load(device);

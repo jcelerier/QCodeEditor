@@ -5,6 +5,7 @@
 #include <QObject> // Required for inheritance
 #include <QString>
 #include <QTextCharFormat>
+#include <verdigris>
 
 /**
  * @brief Class, that describes Qt style
@@ -12,7 +13,7 @@
  */
 class QSyntaxStyle : public QObject
 {
-    Q_OBJECT
+    W_OBJECT(QSyntaxStyle)
 
   public:
     /**

@@ -2,6 +2,9 @@
 #include <QJSONHighlighter>
 #include <QSyntaxStyle>
 
+#include <wobjectimpl.h>
+W_OBJECT_IMPL(QJSONHighlighter)
+
 QJSONHighlighter::QJSONHighlighter(QTextDocument *document)
     : QStyleSyntaxHighlighter(document), m_highlightRules(), m_keyRegex(R"(("[^\r\n:]+?")\s*:)")
 {

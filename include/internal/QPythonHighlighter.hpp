@@ -8,6 +8,7 @@
 // Qt
 #include <QRegularExpression>
 #include <QVector>
+#include <verdigris>
 
 class QSyntaxStyle;
 
@@ -17,7 +18,7 @@ class QSyntaxStyle;
  */
 class QPythonHighlighter : public QStyleSyntaxHighlighter
 {
-    Q_OBJECT
+    W_OBJECT(QPythonHighlighter)
   public:
     /**
      * @brief Constructor.

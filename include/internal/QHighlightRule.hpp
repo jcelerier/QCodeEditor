@@ -3,6 +3,7 @@
 // Qt
 #include <QRegularExpression>
 #include <QString>
+#include <verdigris>
 
 struct QHighlightRule
 {

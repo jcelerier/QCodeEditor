@@ -6,6 +6,9 @@
 #include <QFile>
 #include <QStringListModel>
 
+#include <wobjectimpl.h>
+W_OBJECT_IMPL(QPythonCompleter)
+
 QPythonCompleter::QPythonCompleter(QObject *parent) : QCompleter(parent)
 {
     // Setting up Python types

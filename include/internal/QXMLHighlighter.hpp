@@ -6,6 +6,7 @@
 // Qt
 #include <QRegularExpression>
 #include <QVector>
+#include <verdigris>
 
 /**
  * @brief Class, that describes XML code
@@ -13,7 +14,7 @@
  */
 class QXMLHighlighter : public QStyleSyntaxHighlighter
 {
-    Q_OBJECT
+    W_OBJECT(QXMLHighlighter)
   public:
     /**
      * @brief Constructor.

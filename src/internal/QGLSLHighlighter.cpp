@@ -7,6 +7,9 @@
 #include <QDebug>
 #include <QFile>
 
+#include <wobjectimpl.h>
+W_OBJECT_IMPL(QGLSLHighlighter)
+
 QGLSLHighlighter::QGLSLHighlighter(QTextDocument *document)
     : QStyleSyntaxHighlighter(document), m_highlightRules(),
       m_includePattern(QRegularExpression(R"(#include\s+([<"][a-zA-Z0-9*._]+[">]))")),

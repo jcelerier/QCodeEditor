@@ -6,6 +6,9 @@
 // Qt
 #include <QFile>
 
+#include <wobjectimpl.h>
+W_OBJECT_IMPL(QJavaHighlighter)
+
 QJavaHighlighter::QJavaHighlighter(QTextDocument *document)
     : QStyleSyntaxHighlighter(document), m_highlightRules(), m_commentStartPattern(QRegularExpression(R"(/\*)")),
       m_commentEndPattern(QRegularExpression(R"(\*/)"))

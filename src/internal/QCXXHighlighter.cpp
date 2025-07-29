@@ -6,6 +6,9 @@
 // Qt
 #include <QFile>
 
+#include <wobjectimpl.h>
+W_OBJECT_IMPL(QCXXHighlighter)
+
 QCXXHighlighter::QCXXHighlighter(QTextDocument *document)
     : QStyleSyntaxHighlighter(document), m_highlightRules(),
       m_includePattern(QRegularExpression(R"(^\s*#\s*include\s*([<"][^:?"<>\|]+[">]))")),

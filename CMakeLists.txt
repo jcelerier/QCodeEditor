@@ -80,7 +80,7 @@ set(SOURCE_FILES
 )
 
 # Create code for QObjects
-set(CMAKE_AUTOMOC On)
+set(CMAKE_AUTOMOC OFF)
 
 # Create code from resource files
 set(CMAKE_AUTORCC ON)
@@ -102,6 +102,7 @@ add_library(QCodeEditor STATIC
 
 target_include_directories(QCodeEditor PUBLIC
     include
+    "${OSSIA_3RDPARTY_FOLDER}/verdigris/src"
 )
 
 if(CMAKE_COMPILER_IS_GNUCXX)

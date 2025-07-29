@@ -2,6 +2,9 @@
 #include <QSyntaxStyle>
 #include <QXMLHighlighter>
 
+#include <wobjectimpl.h>
+W_OBJECT_IMPL(QXMLHighlighter)
+
 QXMLHighlighter::QXMLHighlighter(QTextDocument *document)
     : QStyleSyntaxHighlighter(document), m_xmlKeywordRegexes(),
       m_xmlElementRegex(R"(<[\s]*[/]?[\s]*([^\n][a-zA-Z-_:]*)(?=[\s/>]))"), m_xmlAttributeRegex(R"(\w+(?=\=))"),

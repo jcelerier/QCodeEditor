@@ -6,6 +6,9 @@
 // Qt
 #include <QFile>
 
+#include <wobjectimpl.h>
+W_OBJECT_IMPL(QLuaHighlighter)
+
 QLuaHighlighter::QLuaHighlighter(QTextDocument *document)
     : QStyleSyntaxHighlighter(document), m_highlightRules(), m_highlightBlockRules(),
       m_requirePattern(QRegularExpression(R"(require\s*([("'][a-zA-Z0-9*._]+['")]))")),

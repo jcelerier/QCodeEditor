@@ -7,6 +7,7 @@
 // Qt
 #include <QRegularExpression>
 #include <QVector>
+#include <verdigris>
 
 class QSyntaxStyle;
 
@@ -16,7 +17,7 @@ class QSyntaxStyle;
  */
 class QCXXHighlighter : public QStyleSyntaxHighlighter
 {
-    Q_OBJECT
+    W_OBJECT(QCXXHighlighter)
   public:
     /**
      * @brief Constructor.

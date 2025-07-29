@@ -7,6 +7,8 @@
 #include <QFile>
 #include <QXmlStreamReader>
 
+#include <wobjectimpl.h>
+W_OBJECT_IMPL(QSyntaxStyle)
 
 QSyntaxStyle::QSyntaxStyle(QObject *parent) : QObject(parent), m_name(), m_data(), m_loaded(false)
 {

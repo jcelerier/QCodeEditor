@@ -24,6 +24,9 @@
 #include <QTextStream>
 #include <QToolTip>
 
+#include <wobjectimpl.h>
+W_OBJECT_IMPL(QCodeEditor)
+
 QCodeEditor::QCodeEditor(QWidget *widget)
     : QTextEdit(widget), m_highlighter(nullptr), m_syntaxStyle(nullptr), m_lineNumberArea(new QLineNumberArea(this)),
       m_completer(nullptr), m_autoIndentation(true), m_replaceTab(true), m_extraBottomMargin(true), m_textChanged(false),

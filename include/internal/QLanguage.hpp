@@ -4,6 +4,7 @@
 #include <QMap>
 #include <QObject> // Required for inheritance
 #include <QString>
+#include <verdigris>
 
 class QIODevice;
 
@@ -13,7 +14,7 @@ class QIODevice;
  */
 class QLanguage : public QObject
 {
-    Q_OBJECT
+    W_OBJECT(QLanguage)
 
   public:
     /**
