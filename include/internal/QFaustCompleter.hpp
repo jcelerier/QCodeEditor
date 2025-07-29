@@ -2,6 +2,7 @@
 
 // Qt
 #include <QCompleter> // Required for inheritance
+#include <verdigris>
 
 /**
  * @brief Class, that describes completer with
@@ -9,7 +10,7 @@
  */
 class QFaustCompleter : public QCompleter
 {
-    Q_OBJECT
+    W_OBJECT(QFaustCompleter)
 
   public:
     /**

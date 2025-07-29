@@ -5,7 +5,9 @@
 
 // Qt
 #include <QFile>
+#include <wobjectimpl.h>
 
+W_OBJECT_IMPL(QFaustHighlighter)
 QFaustHighlighter::QFaustHighlighter(QTextDocument *document)
     : QStyleSyntaxHighlighter(document), m_highlightRules(),
       m_includePattern(QRegularExpression(R"_(^\s*import\s*\(\s*"([^"]+)"\s*\)\s*;)_")),
