@@ -7,5 +7,6 @@
         <file>languages/lua.xml</file>
         <file>languages/python.xml</file>
         <file>languages/js.xml</file>
+        <file>languages/faust.xml</file>
     </qresource>
 </RCC>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<language>
+    <name>Faust</name>
+    <section name="Keyword">
+        <item>process</item>
+        <item>declare</item>
+        <item>import</item>
+        <item>library</item>
+        <item>environment</item>
+        <item>component</item>
+        <item>with</item>
+        <item>letrec</item>
+        <item>where</item>
+        <item>case</item>
+        <item>waveform</item>
+        <item>soundfile</item>
+        <item>route</item>
+        <item>inputs</item>
+        <item>outputs</item>
+    </section>
+    <section name="PrimitiveType">
+        <item>mem</item>
+        <item>prefix</item>
+        <item>int</item>
+        <item>float</item>
+        <item>rdtable</item>
+        <item>rwtable</item>
+        <item>select2</item>
+        <item>select3</item>
+        <item>ffunction</item>
+        <item>fconstant</item>
+        <item>fvariable</item>
+        <item>attach</item>
+        <item>lowest</item>
+        <item>highest</item>
+    </section>
+    <section name="Type">
+        <item>button</item>
+        <item>checkbox</item>
+        <item>vslider</item>
+        <item>hslider</item>
+        <item>nentry</item>
+        <item>vgroup</item>
+        <item>hgroup</item>
+        <item>tgroup</item>
+        <item>vbargraph</item>
+        <item>hbargraph</item>
+    </section>
+    <section name="Operator">
+        <item>seq</item>
+        <item>par</item>
+        <item>sum</item>
+        <item>prod</item>
+    </section>
+    <section name="Builtin">
+        <item>abs</item>
+        <item>acos</item>
+        <item>asin</item>
+        <item>atan</item>
+        <item>atan2</item>
+        <item>ceil</item>
+        <item>cos</item>
+        <item>exp</item>
+        <item>floor</item>
+        <item>fmod</item>
+        <item>log</item>
+        <item>log10</item>
+        <item>max</item>
+        <item>min</item>
+        <item>pow</item>
+        <item>remainder</item>
+        <item>rint</item>
+        <item>round</item>
+        <item>sin</item>
+        <item>sqrt</item>
+        <item>tan</item>
+    </section>
+</language>

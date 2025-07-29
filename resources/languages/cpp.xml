@@ -88,6 +88,7 @@
     <section name="PrimitiveType">
         <name>bool</name>
         <name>char</name>
+        <name>char8_t</name>
         <name>char16_t</name>
         <name>char32_t</name>
         <name>double</name>
@@ -99,5 +100,15 @@
         <name>unsigned</name>
         <name>void</name>
         <name>wchar_t</name>
+        <name>int8_t</name>
+        <name>int16_t</name>
+        <name>int32_t</name>
+        <name>int64_t</name>
+        <name>uint8_t</name>
+        <name>uint16_t</name>
+        <name>uint32_t</name>
+        <name>uint64_t</name>
+        <name>size_t</name>
+        <name>ssize_t</name>
     </section>
 </root>
