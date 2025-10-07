@@ -27,6 +27,7 @@ set(INCLUDE_FILES
     include/QGLSLCompleter
     include/QGLSLHighlighter
     include/QJavaHighlighter
+    include/QJSCompleter
     include/QJSHighlighter
     include/QLanguage
     include/QXMLHighlighter
@@ -41,6 +42,7 @@ set(INCLUDE_FILES
     include/internal/QCodeEditor.hpp
     include/internal/QCXXHighlighter.hpp
     include/internal/QJavaHighlighter.hpp
+    include/internal/QJSCompleter.hpp
     include/internal/QJSHighlighter.hpp
     include/internal/QLineNumberArea.hpp
     include/internal/QStyleSyntaxHighlighter.hpp
@@ -67,6 +69,7 @@ set(SOURCE_FILES
     src/internal/QGLSLCompleter.cpp
     src/internal/QGLSLHighlighter.cpp
     src/internal/QJavaHighlighter.cpp
+    src/internal/QJSCompleter.cpp
     src/internal/QJSHighlighter.cpp
     src/internal/QLanguage.cpp
     src/internal/QXMLHighlighter.cpp

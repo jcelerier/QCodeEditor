@@ -1,0 +1,44 @@
+// QCodeEditor
+#include <QLanguage>
+#include <QJSCompleter>
+
+// Qt
+#include <QFile>
+#include <QStringListModel>
+
+#include <wobjectimpl.h>
+W_OBJECT_IMPL(QJSCompleter)
+
+QJSCompleter::QJSCompleter(QObject *parent) : QCompleter(parent)
+{
+    // Setting up JavaScript types
+    QStringList list;
+
+    Q_INIT_RESOURCE(qcodeeditor_resources);
+    QFile fl(":/languages/js.xml");
+
+    if (!fl.open(QIODevice::ReadOnly))
+    {
+        return;
+    }
+
+    QLanguage language(&fl);
+
+    if (!language.isLoaded())
+    {
+        return;
+    }
+
+    auto keys = language.keys();
+    for (auto &&key : keys)
+    {
+        auto names = language.names(key);
+        list.append(names);
+    }
+
+    setModel(new QStringListModel(list, this));
+    setCompletionColumn(0);
+    setModelSorting(QCompleter::CaseInsensitivelySortedModel);
+    setCaseSensitivity(Qt::CaseSensitive);
+    setWrapAround(true);
+}
