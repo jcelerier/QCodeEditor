@@ -6,6 +6,7 @@
 
 class QCompleter;
 class QLineNumberArea;
+class QSearchWidget;
 class QSyntaxStyle;
 class QStyleSyntaxHighlighter;
 class QFramedTextAttribute;
@@ -143,6 +144,21 @@ class QCodeEditor : public QTextEdit
      */
     void clearSquiggle();
 
+    /**
+     * @brief Shows the search widget.
+     */
+    void showSearch();
+
+    /**
+     * @brief Hides the search widget.
+     */
+    void hideSearch();
+
+    /**
+     * @brief Returns true if search widget is visible.
+     */
+    bool isSearchVisible() const;
+
   public:
     /**
      * @brief Signal, the font is changed by the wheel event.
@@ -247,6 +263,30 @@ class QCodeEditor : public QTextEdit
      */
     void toggleBlockComment();
     W_SLOT(toggleBlockComment);
+
+    /**
+     * @brief Slot, handles search text changes.
+     */
+    void onSearchTextChanged(const QString &text);
+    W_SLOT(onSearchTextChanged);
+
+    /**
+     * @brief Slot, finds next occurrence.
+     */
+    void findNext();
+    W_SLOT(findNext);
+
+    /**
+     * @brief Slot, finds previous occurrence.
+     */
+    void findPrevious();
+    W_SLOT(findPrevious);
+
+    /**
+     * @brief Slot, clears search highlights.
+     */
+    void clearSearchHighlight();
+    W_SLOT(clearSearchHighlight);
 
   protected:
     /**
@@ -369,6 +409,8 @@ class QCodeEditor : public QTextEdit
 
     void highlightOccurrences();
 
+    void highlightCurrentSearchResult();
+
     /**
      * @brief Method for remove the first group of regex
      * in each line of the selection.
@@ -408,6 +450,7 @@ class QCodeEditor : public QTextEdit
     QStyleSyntaxHighlighter *m_highlighter;
     QSyntaxStyle *m_syntaxStyle;
     QLineNumberArea *m_lineNumberArea;
+    QSearchWidget *m_searchWidget;
     QCompleter *m_completer;
 
     bool m_autoIndentation;
@@ -416,9 +459,11 @@ class QCodeEditor : public QTextEdit
     bool m_textChanged;
     QString m_tabReplace;
 
-    QList<QTextEdit::ExtraSelection> extra1, extra2, extra_squiggles;
+    QList<QTextEdit::ExtraSelection> extra1, extra2, extra_squiggles, extra_search;
 
     QVector<SquiggleInformation> m_squiggler;
+    QVector<QTextCursor> m_searchResults;
+    int m_currentSearchIndex;
 
     QVector<Parenthesis> m_parentheses;
 };

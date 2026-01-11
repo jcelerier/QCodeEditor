@@ -3,8 +3,10 @@
 #include <QCodeEditor>
 #include <QJSHighlighter>
 #include <QJavaHighlighter>
+#include <QLineEdit>
 #include <QLineNumberArea>
 #include <QPythonHighlighter>
+#include <QSearchWidget>
 #include <QStyleSyntaxHighlighter>
 #include <QSyntaxStyle>
 
@@ -29,8 +31,9 @@ W_OBJECT_IMPL(QCodeEditor)
 
 QCodeEditor::QCodeEditor(QWidget *widget)
     : QTextEdit(widget), m_highlighter(nullptr), m_syntaxStyle(nullptr), m_lineNumberArea(new QLineNumberArea(this)),
-      m_completer(nullptr), m_autoIndentation(true), m_replaceTab(true), m_extraBottomMargin(true), m_textChanged(false),
-      m_tabReplace(QString(4, ' ')), extra1(), extra2(), extra_squiggles(), m_squiggler(),
+      m_searchWidget(new QSearchWidget(this)), m_completer(nullptr), m_autoIndentation(true), m_replaceTab(true),
+      m_extraBottomMargin(true), m_textChanged(false), m_tabReplace(QString(4, ' ')), extra1(), extra2(),
+      extra_squiggles(), extra_search(), m_squiggler(), m_searchResults(), m_currentSearchIndex(-1),
       m_parentheses({{'(', ')'}, {'{', '}'}, {'[', ']'}, {'\"', '\"'}, {'\'', '\''}})
 {
     initFont();
@@ -63,6 +66,12 @@ void QCodeEditor::performConnections()
 
     connect(this, &QTextEdit::cursorPositionChanged, this, &QCodeEditor::updateExtraSelection1);
     connect(this, &QTextEdit::selectionChanged, this, &QCodeEditor::updateExtraSelection2);
+
+    // Search widget connections
+    connect(m_searchWidget, &QSearchWidget::searchTextChanged, this, &QCodeEditor::onSearchTextChanged);
+    connect(m_searchWidget, &QSearchWidget::findNext, this, &QCodeEditor::findNext);
+    connect(m_searchWidget, &QSearchWidget::findPrevious, this, &QCodeEditor::findPrevious);
+    connect(m_searchWidget, &QSearchWidget::searchClosed, this, &QCodeEditor::clearSearchHighlight);
 }
 
 void QCodeEditor::setHighlighter(QStyleSyntaxHighlighter *highlighter)
@@ -86,6 +95,7 @@ void QCodeEditor::setSyntaxStyle(QSyntaxStyle *style)
     m_syntaxStyle = style;
 
     m_lineNumberArea->setSyntaxStyle(m_syntaxStyle);
+    m_searchWidget->setSyntaxStyle(m_syntaxStyle);
 
     if (m_highlighter)
     {
@@ -124,6 +134,18 @@ void QCodeEditor::resizeEvent(QResizeEvent *e)
 
     updateLineGeometry();
     updateBottomMargin();
+
+    // Position search widget at the top right
+    if (m_searchWidget)
+    {
+        int searchWidth = qMin(400, width() - m_lineNumberArea->sizeHint().width() - 20);
+        m_searchWidget->setGeometry(
+            width() - searchWidth - 10,
+            0,
+            searchWidth,
+            m_searchWidget->sizeHint().height()
+        );
+    }
 }
 
 void QCodeEditor::changeEvent(QEvent *e)
@@ -209,7 +231,7 @@ void QCodeEditor::updateExtraSelection1()
     highlightCurrentLine();
     highlightParenthesis();
 
-    setExtraSelections(extra1 + extra2 + extra_squiggles);
+    setExtraSelections(extra1 + extra2 + extra_squiggles + extra_search);
 }
 
 void QCodeEditor::updateExtraSelection2()
@@ -218,7 +240,7 @@ void QCodeEditor::updateExtraSelection2()
 
     highlightOccurrences();
 
-    setExtraSelections(extra1 + extra2 + extra_squiggles);
+    setExtraSelections(extra1 + extra2 + extra_squiggles + extra_search);
 }
 
 void QCodeEditor::indent()
@@ -646,6 +668,20 @@ void QCodeEditor::proceedCompleterEnd(QKeyEvent *e)
 
 void QCodeEditor::keyPressEvent(QKeyEvent *e)
 {
+    // Handle Ctrl+F for search
+    if (e->modifiers() == Qt::ControlModifier && e->key() == Qt::Key_F)
+    {
+        showSearch();
+        return;
+    }
+
+    // Handle Escape to close search
+    if (e->key() == Qt::Key_Escape && m_searchWidget->isSearchVisible())
+    {
+        hideSearch();
+        return;
+    }
+
     auto completerSkip = proceedCompleterBegin(e);
 
     if (!completerSkip)
@@ -1209,4 +1245,134 @@ void QCodeEditor::addInEachLineOfSelection(const QRegularExpression &regex, cons
         cursor.setPosition(pos, QTextCursor::KeepAnchor);
     }
     setTextCursor(cursor);
+}
+
+void QCodeEditor::showSearch()
+{
+    m_searchWidget->showSearch();
+
+    // Pre-fill with selected text if any
+    auto cursor = textCursor();
+    if (cursor.hasSelection())
+    {
+        QString selectedText = cursor.selectedText();
+        // Only use single-line selections
+        if (!selectedText.contains(QChar::ParagraphSeparator))
+        {
+            m_searchWidget->m_searchInput->setText(selectedText);
+        }
+    }
+}
+
+void QCodeEditor::hideSearch()
+{
+    m_searchWidget->hideSearch();
+}
+
+bool QCodeEditor::isSearchVisible() const
+{
+    return m_searchWidget->isSearchVisible();
+}
+
+void QCodeEditor::onSearchTextChanged(const QString &text)
+{
+    extra_search.clear();
+    m_searchResults.clear();
+    m_currentSearchIndex = -1;
+
+    if (text.isEmpty())
+    {
+        m_searchWidget->updateResultCount(0, 0);
+        setExtraSelections(extra1 + extra2 + extra_squiggles + extra_search);
+        return;
+    }
+
+    // Find all occurrences
+    QTextDocument *doc = document();
+    QTextCursor cursor = doc->find(text, 0);
+
+    while (!cursor.isNull())
+    {
+        m_searchResults.append(cursor);
+
+        QTextEdit::ExtraSelection selection;
+        selection.cursor = cursor;
+        selection.format = m_syntaxStyle->getFormat("SearchResult");
+        extra_search.append(selection);
+
+        cursor = doc->find(text, cursor);
+    }
+
+    // Move to first result after current cursor position
+    if (!m_searchResults.isEmpty())
+    {
+        int cursorPos = textCursor().position();
+        m_currentSearchIndex = 0;
+
+        for (int i = 0; i < m_searchResults.size(); ++i)
+        {
+            if (m_searchResults[i].selectionStart() >= cursorPos)
+            {
+                m_currentSearchIndex = i;
+                break;
+            }
+        }
+
+        // Highlight current match differently
+        highlightCurrentSearchResult();
+    }
+
+    m_searchWidget->updateResultCount(
+        m_searchResults.isEmpty() ? 0 : m_currentSearchIndex + 1,
+        m_searchResults.size()
+    );
+
+    setExtraSelections(extra1 + extra2 + extra_squiggles + extra_search);
+}
+
+void QCodeEditor::highlightCurrentSearchResult()
+{
+    if (m_currentSearchIndex < 0 || m_currentSearchIndex >= m_searchResults.size())
+        return;
+
+    // Move cursor to current result
+    QTextCursor cursor = m_searchResults[m_currentSearchIndex];
+    setTextCursor(cursor);
+    ensureCursorVisible();
+}
+
+void QCodeEditor::findNext()
+{
+    if (m_searchResults.isEmpty())
+        return;
+
+    m_currentSearchIndex++;
+    if (m_currentSearchIndex >= m_searchResults.size())
+        m_currentSearchIndex = 0;
+
+    highlightCurrentSearchResult();
+
+    m_searchWidget->updateResultCount(m_currentSearchIndex + 1, m_searchResults.size());
+}
+
+void QCodeEditor::findPrevious()
+{
+    if (m_searchResults.isEmpty())
+        return;
+
+    m_currentSearchIndex--;
+    if (m_currentSearchIndex < 0)
+        m_currentSearchIndex = m_searchResults.size() - 1;
+
+    highlightCurrentSearchResult();
+
+    m_searchWidget->updateResultCount(m_currentSearchIndex + 1, m_searchResults.size());
+}
+
+void QCodeEditor::clearSearchHighlight()
+{
+    extra_search.clear();
+    m_searchResults.clear();
+    m_currentSearchIndex = -1;
+    setExtraSelections(extra1 + extra2 + extra_squiggles + extra_search);
 }

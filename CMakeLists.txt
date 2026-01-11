@@ -22,6 +22,7 @@ set(INCLUDE_FILES
     include/QCodeEditor
     include/QCXXHighlighter
     include/QLineNumberArea
+    include/QSearchWidget
     include/QStyleSyntaxHighlighter
     include/QSyntaxStyle
     include/QGLSLCompleter
@@ -45,6 +46,7 @@ set(INCLUDE_FILES
     include/internal/QJSCompleter.hpp
     include/internal/QJSHighlighter.hpp
     include/internal/QLineNumberArea.hpp
+    include/internal/QSearchWidget.hpp
     include/internal/QStyleSyntaxHighlighter.hpp
     include/internal/QSyntaxStyle.hpp
     include/internal/QGLSLCompleter.hpp
@@ -63,6 +65,7 @@ set(INCLUDE_FILES
 set(SOURCE_FILES
     src/internal/QCodeEditor.cpp
     src/internal/QLineNumberArea.cpp
+    src/internal/QSearchWidget.cpp
     src/internal/QCXXHighlighter.cpp
     src/internal/QSyntaxStyle.cpp
     src/internal/QStyleSyntaxHighlighter.cpp
