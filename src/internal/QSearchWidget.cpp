@@ -4,6 +4,7 @@
 
 #include <QHBoxLayout>
 #include <QLineEdit>
+#include <QPalette>
 #include <QPushButton>
 #include <QLabel>
 #include <QKeyEvent>
@@ -75,22 +76,24 @@ void QSearchWidget::setSyntaxStyle(QSyntaxStyle *style)
 
 void QSearchWidget::updateStyle()
 {
-#ifndef QT_NO_STYLE_STYLESHEET
     if (m_syntaxStyle)
     {
-        QString bgColor = m_syntaxStyle->getFormat("Text").background().color().name();
-        QString textColor = m_syntaxStyle->getFormat("Text").foreground().color().name();
-        QString borderColor = m_syntaxStyle->getFormat("LineNumber").foreground().color().name();
+        // Through the palette rather than a style sheet
+        const QColor bg = m_syntaxStyle->getFormat("Text").background().color();
+        const QColor text = m_syntaxStyle->getFormat("Text").foreground().color();
+        const QColor border = m_syntaxStyle->getFormat("LineNumber").foreground().color();
 
-        setStyleSheet(QString(
-            "QSearchWidget { background-color: %1; border-bottom: 1px solid %2; }"
-            "QLineEdit { background-color: %1; color: %3; border: 1px solid %2; padding: 2px; }"
-            "QPushButton { background-color: %1; color: %3; border: 1px solid %2; padding: 2px; }"
-            "QPushButton:hover { background-color: %2; }"
-            "QLabel { color: %3; }"
-        ).arg(bgColor, borderColor, textColor));
+        QPalette pal = palette();
+        pal.setColor(QPalette::Window, bg);
+        pal.setColor(QPalette::Base, bg);
+        pal.setColor(QPalette::Button, bg);
+        pal.setColor(QPalette::Text, text);
+        pal.setColor(QPalette::WindowText, text);
+        pal.setColor(QPalette::ButtonText, text);
+        pal.setColor(QPalette::Mid, border);
+        setPalette(pal);
+        setAutoFillBackground(true);
     }
-#endif
 }
 
 void QSearchWidget::showSearch()

@@ -4,6 +4,7 @@
 #include <QJSHighlighter>
 #include <QJavaHighlighter>
 #include <QLineEdit>
+#include <QPalette>
 #include <QLineNumberArea>
 #include <QPythonHighlighter>
 #include <QSearchWidget>
@@ -112,17 +113,20 @@ void QCodeEditor::updateStyle()
         m_highlighter->rehighlight();
     }
 
-#ifndef QT_NO_STYLE_STYLESHEET
     if (m_syntaxStyle)
     {
-        QString backgroundColor = m_syntaxStyle->getFormat("Text").background().color().name();
-        QString textColor = m_syntaxStyle->getFormat("Text").foreground().color().name();
-        QString selectionBackground = m_syntaxStyle->getFormat("Selection").background().color().name();
-
-        setStyleSheet(QString("QTextEdit { background-color: %1; selection-background-color: %2; color: %3; }")
-                          .arg(backgroundColor, selectionBackground, textColor));
+        // Through the palette rather than a style sheet: works with a Qt built
+        // without them, and keeps the alpha of the theme's colours (a transparent
+        // text background shows what is behind the editor).
+        const auto& text = m_syntaxStyle->getFormat("Text");
+        const auto& selection = m_syntaxStyle->getFormat("Selection");
+        QPalette pal = palette();
+        pal.setColor(QPalette::Base, text.background().color());
+        pal.setColor(QPalette::Text, text.foreground().color());
+        pal.setColor(QPalette::Highlight, selection.background().color());
+        pal.setColor(QPalette::HighlightedText, text.foreground().color());
+        setPalette(pal);
     }
-#endif
 
     updateExtraSelection1();
     updateExtraSelection2();
